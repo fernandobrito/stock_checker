@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require File.join(File.dirname(__FILE__), '..', 'lib', 'stock_checker')
+
+# url = 'http://www.sportsdirect.com/character-zipped-hoody-infant-boys-312042?colcode=31204292'
+url = 'https://dl.dropboxusercontent.com/u/9598149/products.csv'
+StockChecker.check_list(url)
