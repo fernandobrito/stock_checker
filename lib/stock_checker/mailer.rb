@@ -22,7 +22,7 @@ module StockChecker
                  :port                 => 587,
                  :domain               => '***REMOVED***',
                  :user_name            => 'nao.responda@***REMOVED***',
-                 :password             => '***REMOVED***',
+                 :password             => '',
                  :authentication       => 'plain',
                  :enable_starttls_auto => true  }
 
