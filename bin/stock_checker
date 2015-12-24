@@ -9,7 +9,7 @@ options[:dry_run] = false
 options[:email] = nil
 
 OptionParser.new do |opts|
-opts.banner = "Usage: stock_checker [options]"
+  opts.banner = "Usage: stock_checker [options]"
 
   opts.on("-d", "--dry-run", "Dry run. Do not send emails and do not modify data files.") do |v|
     options[:dry_run] = v
@@ -19,6 +19,9 @@ opts.banner = "Usage: stock_checker [options]"
     options[:email] = v
   end
 
+  opts.on("-u", "--url URL", "URL with a CSV file containing one product URL per line") do |v|
+    options[:url] = v
+  end
 end.parse!
 
 puts "==> Running executable with the following options: #{options}"
@@ -26,7 +29,6 @@ puts "==> Running executable with the following options: #{options}"
 
 # mine. debug
 # url = 'https://dl.dropboxusercontent.com/u/9598149/products.csv'
+# url = 'https://www.dropbox.com/s/eik1k6xivpa6vln/Stock%20Checker.csv?dl=1'
 
-url = 'https://www.dropbox.com/s/eik1k6xivpa6vln/Stock%20Checker.csv?dl=1'
-
-StockChecker.check_list(url, options)
+StockChecker.check_list(options)

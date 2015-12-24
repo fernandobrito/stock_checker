@@ -12,8 +12,8 @@ require File.join(File.dirname(__FILE__), 'helpers', 'try_rescue')
 
 module StockChecker
   # @param url String URL of a CSV file with many product URLs
-  def self.check_list(url, options = Hash.new)
-    product_urls = StockChecker::Importer.import(url)
+  def self.check_list(options = Hash.new)
+    product_urls = StockChecker::Importer.import(options[:url])
 
     for product_url in product_urls
       StockChecker.check_single(product_url, options)

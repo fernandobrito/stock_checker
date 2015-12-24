@@ -22,7 +22,5 @@ Clone the repository and then execute:
 
 Update the SMTP email configuration on `mailer.rb`.
 
-Update the input URL on `bin/stock_checker`.
-
-Set up a cron job to execute `bin/stock_checker --email <EMAIL>`. You can also pass `--dry-run` for debugging purposes, so no emails or files are modified. 
+Set up a cron job to execute `bin/stock_checker --email <EMAIL> --url <URL>`. You can also pass `--dry-run` for debugging purposes, so no emails or files are modified. 
 
