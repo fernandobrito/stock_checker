@@ -1,36 +1,28 @@
-# StockChecker
+# stock_checker
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/stock_checker`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby scraper to check for changes on the stock status of products from the online shop SportsDirect.com.
 
-TODO: Delete this and the text above, and describe your gem
+The input comes from a remote .csv file (hosted on Dropbox, for example), one product URL per line.
+
+The output is sent by email, as a formatted diff.
+
+## Internal working
+
+There is a class `Parser` that goes into each individual product webpage. All the data  we need from a product (colors, sizes, prices and stock status) is already stored in a JSON format on the page. `Converter` converts this complicated JSON into a data structure easier to work with, remmoving unnecessary attributes. This simpler data structure is stored in a file, and later retrieved (`Storage`), to be checked for modifications (`Diff`). In case something has changed, an email is sent with the formatted diff (`Mailer`).
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'stock_checker'
-```
-
-And then execute:
+Clone the repository and then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install stock_checker
 
 ## Usage
 
-TODO: Write usage instructions here
+Update the SMTP email configuration on `mailer.rb`.
 
-## Development
+Update the input URL on `bin/stock_checker`.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake false` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/stock_checker.
+Set up a cron job to execute `bin/stock_checker --email <EMAIL>`. You can also pass `--dry-run` for debugging purposes, so no emails or files are modified. 
 
