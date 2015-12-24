@@ -41,9 +41,9 @@ module StockChecker
       # puts body
 
       mail = Mail.new do
-        from     ''
+        from     EMAIL_FROM
         to       to
-        cc       ''
+        cc       EMAIL_CC
         subject  subject
 
         html_part do
