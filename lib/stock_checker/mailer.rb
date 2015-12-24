@@ -3,6 +3,17 @@ require 'premailer'
 
 module StockChecker
   module Mailer
+    EMAIL_OPTIONS = { :address              => "",
+                      :port                 => 587,
+                      :domain               => '',
+                      :user_name            => '',
+                      :password             => '',
+                      :authentication       => 'plain',
+                      :enable_starttls_auto => true  }
+
+    EMAIL_FROM = ''
+    EMAIL_CC = ''
+
     def self.notify_updated_product(to, product_name, body)
       StockChecker::Mailer.send(to, "[Change] #{product_name}", body)
     end
@@ -18,13 +29,7 @@ module StockChecker
 
 
     def self.send(to, subject, body)
-      options = { :address              => "***REMOVED***",
-                 :port                 => 587,
-                 :domain               => '***REMOVED***',
-                 :user_name            => 'nao.responda@***REMOVED***',
-                 :password             => '',
-                 :authentication       => 'plain',
-                 :enable_starttls_auto => true  }
+      options = EMAIL_OPTIONS
 
       Mail.defaults do
         delivery_method :smtp, options
@@ -36,9 +41,9 @@ module StockChecker
       # puts body
 
       mail = Mail.new do
-        from     'nao.responda@***REMOVED***'
+        from     ''
         to       to
-        cc       'test@***REMOVED***'
+        cc       ''
         subject  subject
 
         html_part do

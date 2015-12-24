@@ -10,12 +10,6 @@ require File.join(File.dirname(__FILE__), 'stock_checker', 'mailer')
 
 require File.join(File.dirname(__FILE__), 'helpers', 'try_rescue')
 
-# TODO:
-# - Upload to the server and run 6am and 6pm
-# - Improve cases when item is out of stock and appears on the list later
-# - Check when item is gone. When it is gone, send email. However, continue checking. If it is back, send email
-# - ***REMOVED***
-
 module StockChecker
   # @param url String URL of a CSV file with many product URLs
   def self.check_list(url, options = Hash.new)
