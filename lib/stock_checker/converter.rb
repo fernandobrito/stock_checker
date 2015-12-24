@@ -7,8 +7,6 @@
 #    ProdSizePrices
 #      SellPrice
 
-require 'byebug'
-
 module StockChecker
   module Converter
     # Converts an entire hashed json with all products to a simpler hash
@@ -59,17 +57,20 @@ module StockChecker
 
 
 private
-    # Converts
+    # Converts the object to string
     def self.convert_to_rows(hash)
       output = Array.new
 
       hash.each do |color, sizes|
+        # Line header. Just to format it better
+        output << "#{color.center(15)}  =================================="
+
         sizes.each do |size, items|
           output << "#{color.center(15)} / #{size.center(10)} / #{items[0].center(10)} / #{items[1].center(10)}"
         end
       end
 
-      puts output.sort.join("\n")
+      # puts output.sort.join("\n")
       output.sort.join("\n")
     end
   end

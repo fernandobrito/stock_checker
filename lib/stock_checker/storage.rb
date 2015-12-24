@@ -2,14 +2,16 @@ module StockChecker
   module Storage
     PATH = File.join(File.dirname(__FILE__), '..', '..', 'data')
 
-    # * +parser+ - A Parser
-    def self.store(parser)
-      Logging::logger.info "[Storage] Storing file #{parser.uri}"
+    # Save content in file name uri
+    #
+    # @param [String] uri
+    # @param [String] content
+    # @return [String] content of file
+    def self.store(uri, content)
+      Logging::logger.info "[Storage] Storing file #{uri}"
 
-      simple_rows = StockChecker::Converter.convert_complex_json(parser.json_variants, parser.colors)
-
-      File.open(File.join(PATH, parser.uri), 'w') do |file|
-        file.write(simple_rows)
+      File.open(File.join(PATH, uri), 'w') do |file|
+        file.write(content)
       end
     end
 
@@ -17,14 +19,14 @@ module StockChecker
     # Retrieve saved file for this parser or nil if there is none.
     # Useful to see if this is first time parsing.
     #
-    # @param parser
+    # @param uri
     # @return [String] content of file
-    def self.retrieve(parser)
-      Logging::logger.info "[Storage] Retrieving file #{parser.uri}"
+    def self.retrieve(uri)
+      Logging::logger.info "[Storage] Retrieving file #{uri}"
 
-      return nil unless File.exists?(File.join(PATH, parser.uri))
+      return nil unless File.exists?(File.join(PATH, uri))
 
-      return File.read(File.join(PATH, parser.uri))
+      return File.read(File.join(PATH, uri))
     end
   end
 end

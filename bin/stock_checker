@@ -1,8 +1,33 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
+require 'bundler/setup'
+require 'optparse'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'stock_checker')
 
-# url = 'http://www.sportsdirect.com/character-zipped-hoody-infant-boys-312042?colcode=31204292'
-url = 'https://dl.dropboxusercontent.com/u/9598149/products.csv'
-StockChecker.check_list(url)
+options = {}
+options[:dry_run] = false
+options[:email] = nil
+
+OptionParser.new do |opts|
+opts.banner = "Usage: stock_checker [options]"
+
+  opts.on("-d", "--dry-run", "Dry run. Do not send emails and do not modify data files.") do |v|
+    options[:dry_run] = v
+  end
+
+  opts.on("-e", "--email [EMAIL]", "Email address to send the notifications to.") do |v|
+    options[:email] = v
+  end
+
+end.parse!
+
+puts "==> Running executable with the following options: #{options}"
+
+
+# mine
+# url = 'https://dl.dropboxusercontent.com/u/9598149/products.csv'
+
+# ***REMOVED***
+url = 'https://www.dropbox.com/s/eik1k6xivpa6vln/Stock%20Checker.csv?dl=1'
+
+StockChecker.check_list(url, options)
