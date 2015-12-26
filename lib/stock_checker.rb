@@ -1,6 +1,9 @@
 require File.join(File.dirname(__FILE__), 'stock_checker', 'version')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'logging')
 
+require File.join(File.dirname(__FILE__), 'stock_checker', 'models', 'product')
+require File.join(File.dirname(__FILE__), 'stock_checker', 'models', 'item')
+
 require File.join(File.dirname(__FILE__), 'stock_checker', 'parser')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'storage')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'converter')
@@ -25,25 +28,25 @@ module StockChecker
     # Parse from url
     Logging::logger.info '= [StockChecker] Initializing'
 
-    parser = StockChecker::Parser.new(url)
-
     begin
-      # Store new json
-      new = StockChecker::Converter.convert_complex_json(parser.json_variants, parser.colors)
+      parser = Parser.new(url)
+
+      new = Product.new(parser.product_name, parser.uri, url)
+      new.items = Converter.convert_complex_json(parser.json_variants, parser.colors)
     rescue IOError
-      new = ''
+      new = Product.new(nil, Parser.extract_uri(url), url)
     end
 
     # Check if we already have a file for this parser
-    old = StockChecker::Storage.retrieve(parser.uri)
+    old = Storage.retrieve(Parser.extract_uri(url))
 
     # If file exists
     if old
       Logging::logger.info '== [BEFORE] =='
-      Logging::logger.info "\n" + old
+      Logging::logger.info "\n" + old.to_s
 
       Logging::logger.info '== [AFTER] =='
-      Logging::logger.info "\n" + new
+      Logging::logger.info "\n" + new.to_s
 
       Logging::logger.info ''
 
@@ -55,22 +58,22 @@ module StockChecker
         Logging::logger.info '== [StockChecker] Product not updated'
 
       # It did not exist, but now it does
-      elsif old.empty? && !new.empty?
+      elsif old.exists? && new.exists?
         Logging::logger.info '== [StockChecker] Product did not exist, but now it does'
 
-        diff = StockChecker::Diff.diff(old, new)
+        diff = Diff.diff(old, new)
         diff.insert(0, "Product: #{url} \n\n")
 
         unless options[:dry_run]
-          StockChecker::Mailer.notify_readed_product(options[:email], parser.product_name, diff)
+          Mailer.notify_readed_product(options[:email], parser.product_name, diff)
         end
 
       # Product existed but now it does not
-      elsif new.empty?
+      elsif ! new.exists?
         Logging::logger.info '== [StockChecker] Product existed, but now it does not'
 
         unless options[:dry_run]
-          StockChecker::Mailer.notify_removed_product(options[:email], url)
+          Mailer.notify_removed_product(options[:email], url)
         end
 
       # Product existed and was updated
@@ -88,7 +91,7 @@ module StockChecker
 
     # Save it anyway
     unless options[:dry_run]
-      storage = StockChecker::Storage.store(parser.uri, new)
+      storage = Storage.store(new)
     end
 
     Logging::logger.info "\n"

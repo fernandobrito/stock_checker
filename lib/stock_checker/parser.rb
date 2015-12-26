@@ -17,11 +17,17 @@ module StockChecker
 
       @page = HTTParty.get(@url)
       @parsed_page = Nokogiri::HTML(page)
+
+      validate_if_page_exists
     end
 
     def uri
-      # Gets URI and remove any ?colcode=XXXX that may exist
-      @url.split('/').last.split('?').first
+      Parser.extract_uri(@url)
+    end
+
+    # Gets URI and remove any ?colcode=XXXX that may exist
+    def self.extract_uri(url)
+      url.split('/').last.split('?').first
     end
 
     def page_exists?
@@ -29,27 +35,19 @@ module StockChecker
     end
 
     def json_variants
-      validate_if_page_exists
-
       JSON.parse(@parsed_page.css("[id$='sAddToBagWrapper']").attr('data-variants'))
     end
 
     def colors_element
-      validate_if_page_exists
-
       @parsed_page.css("[id$='colourDdl']").children.to_a.keep_if{|el| el.attr("value")}
     end
 
     def product_name
-      validate_if_page_exists
-
       @parsed_page.css("#ProductName").text
     end
 
     # A hash table with :color_code => color
     def colors
-      validate_if_page_exists
-
       output = Hash.new
 
       for element in colors_element

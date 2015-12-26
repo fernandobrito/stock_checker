@@ -9,10 +9,13 @@
 
 module StockChecker
   module Converter
-    # Converts an entire hashed json with all products to a simpler hash
+    # Converts an entire hashed json with all product items (from the website)
+    #  to an array of Item objects
     # On the process, replaces color_ids with the color name
-    # Then convert it to rows
+
     def self.convert_complex_json(json, color_table)
+      # Create the array with all items
+      items = Array.new
 
       # First, we collect all colors and sizes
       colors = []
@@ -48,30 +51,11 @@ module StockChecker
           sell_price = size_variant['ProdSizePrices']['SellPrice']
           availability = size_variant['State']
 
-          hash[color_name][size_name] = [sell_price, availability]
+          items << Item.new(size_name, color_name, sell_price, availability)
         end
       end
 
-      convert_to_rows(hash)
-    end
-
-
-private
-    # Converts the object to string
-    def self.convert_to_rows(hash)
-      output = Array.new
-
-      hash.each do |color, sizes|
-        # Line header. Just to format it better
-        output << "#{color.center(15)}  =================================="
-
-        sizes.each do |size, items|
-          output << "#{color.center(15)} / #{size.center(10)} / #{items[0].center(10)} / #{items[1].center(10)}"
-        end
-      end
-
-      # puts output.sort.join("\n")
-      output.sort.join("\n")
+      items
     end
   end
  end
