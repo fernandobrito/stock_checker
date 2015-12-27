@@ -46,6 +46,10 @@ module StockChecker
       @parsed_page.css("#ProductName").text
     end
 
+    def picture_url
+      @parsed_page.css('#zoomtarget').first.attr('href')
+    end
+
     # A hash table with :color_code => color
     def colors
       output = Hash.new

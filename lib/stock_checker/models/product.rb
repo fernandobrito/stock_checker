@@ -1,6 +1,6 @@
 module StockChecker
   class Product
-    attr_accessor :items
+    attr_accessor :items, :picture_url
     attr_reader :name, :uri, :url
 
     def initialize(name, uri, url)

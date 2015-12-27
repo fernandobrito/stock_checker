@@ -33,6 +33,7 @@ module StockChecker
 
       new = Product.new(parser.product_name, parser.uri, url)
       new.items = Converter.convert_complex_json(parser.json_variants, parser.colors)
+      new.picture_url = parser.picture_url
     rescue IOError
       new = Product.new(nil, Parser.extract_uri(url), url)
     end
