@@ -16,7 +16,7 @@ module StockChecker
     def find_item(item)
       return nil if @items.nil?
 
-      result = @items.select{|i| i.size == item.size && i.color == item.color }
+      result = @items.select{|i| i.same_as?(item) }
 
       if result.empty?
         return nil

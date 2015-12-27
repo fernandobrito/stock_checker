@@ -10,5 +10,9 @@ module StockChecker
       @price = price
       @stock = stock
     end
+
+    def same_as?(item)
+      return (self.size == item.size && self.color == item.color)
+    end
   end
 end
