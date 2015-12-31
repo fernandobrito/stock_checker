@@ -1,31 +1,56 @@
 <html>
-<head>
-  <title>SportsDirect Changes Report</title>
+  <head>
+    <title>SportsDirect Changes Report</title>
 
-  <style>
-    .product-image { width: 150px; }
-    .strong { font-weight: bold; }
-    .red { color: red; }
-    .green { color: green; }
-  </style>
-</head>
-<body>
-  <% product_notifications = @notifications.group_by(&:product) %>
+    <style>
+      .product-image { width: 150px; }
+      .strong { font-weight: bold; }
+      .red { color: red; }
+      .green { color: green; }
+      .container { text-align: center; }
 
-  <h1>Product changes (generated at <%= @generated_at %>)</h1>
+      .tooltip-inner {
+        text-align: left !important;
+        max-width: 700px !important;
+        font-family: "Lucida Console", Monaco, monospace !important;
+      }
+    </style>
 
-  <div>
-    <% product_notifications.each do |product, notifications| %>
-      <h2><a href="<%= product.url %>" target="_blank"><%= product.name %></a></h2>
-      <img class="product-image" src="<%= product.picture_url %>" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  </head>
 
-      <p>
-        <%= notifications.join('<br>') %>
-      </p>
+  <body>
+    <% product_notifications = @notifications.group_by(&:product) %>
 
-      <hr />
-    <% end %>
-  </div>
+    <div class="container">
+      <h1>Product changes <small>(generated at <%= @generated_at %>)</small></h1>
 
-</body>
+      <% product_notifications.each do |product, notifications| %>
+        <h2>
+          <a href="<%= product.url %>" target="_blank"
+               data-toggle="tooltip" title="<%= Converter.convert_items_to_string_rows(product.items).gsub(" ", "&nbsp;") %>"
+               data-placement="bottom"><%= product.name %></a>
+        </h2>
+
+        <img class="product-image" src="<%= product.picture_url %>" />
+
+        <p>
+          <%= notifications.join('<br>') %>
+        </p>
+
+        <hr />
+      <% end %>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip({ html: true })
+      })
+    </script>
+
+  </body>
 </html>

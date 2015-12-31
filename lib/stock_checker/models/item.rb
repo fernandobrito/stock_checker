@@ -2,13 +2,13 @@ module StockChecker
 
   # Product item
   class Item
-    attr_reader :size, :color, :price, :stock
+    attr_accessor :size, :color, :price, :stock
 
     # @param [String] size
     # @param [String] color
     # @param [String] price
     # @param [String] stock
-    def initialize(size, color, price, stock)
+    def initialize(size, color, price = nil, stock = nil)
       @size = size
       @color = color
       @price = price

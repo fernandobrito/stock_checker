@@ -31,13 +31,9 @@ module StockChecker
 
 
       # Second, generate all possibilities
-      hash = Hash.new
-
-      for color in colors
-        hash[color] = Hash.new
-
-        for size in sizes
-          hash[color][size] = ['', '']
+      for color in colors.uniq
+        for size in sizes.uniq
+          items << Item.new(size, color, '', '')
         end
       end
 
@@ -51,11 +47,32 @@ module StockChecker
           sell_price = size_variant['ProdSizePrices']['SellPrice']
           availability = size_variant['State']
 
-          items << Item.new(size_name, color_name, sell_price, availability)
+          # Find item in array and update data
+          item = items.select{|i| i.same_as?(Item.new(size_name, color_name)) }.first
+          item.price = sell_price
+          item.stock = availability
         end
       end
 
       items
+    end
+
+    def self.convert_items_to_string_rows(items)
+      output = Array.new
+
+      groups = items.group_by{ |item| item.color }
+
+      groups.each do |color, items|
+        # Line header. Just to format it better
+        output << "#{color.center(15)}  =================================="
+
+        items.each do |item|
+          output << "#{item.color.center(15)} / #{item.size.center(10)} / #{item.price.center(10)} / #{item.stock.center(10)}"
+        end
+      end
+
+      # puts output.sort.join("\n")
+      output.sort.join('<br/>')
     end
   end
  end
