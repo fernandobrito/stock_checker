@@ -1,5 +1,6 @@
 require 'mail'
 require 'premailer'
+require 'erb'
 
 module StockChecker
   module Mailer
@@ -14,28 +15,17 @@ module StockChecker
     EMAIL_FROM = ''
     EMAIL_CC = ''
 
-    def self.notify_updated_product(to, product_name, body)
-      StockChecker::Mailer.send(to, "[Change] #{product_name}", body)
-    end
+    TEMPLATE_FILE = File.join(File.dirname(__FILE__),  '..', '..', 'reports', 'email_template.html.erb')
 
-    def self.notify_removed_product(to, product_url)
-      StockChecker::Mailer.send(to, "[Removed] #{product_url}", "#{product_url} was removed from the supplier.")
-    end
-
-    # The URL dit not exist before and now it does
-    def self.notify_readed_product(to, product_name, body)
-      StockChecker::Mailer.send(to, "[Readed] #{product_name}", body)
-    end
-
-
-    def self.send(to, subject, body)
-      options = EMAIL_OPTIONS
-
+    def self.notify_new_report(to, report)
       Mail.defaults do
-        delivery_method :smtp, options
+        delivery_method :smtp, EMAIL_OPTIONS
       end
 
-      premailer = Premailer.new(body, with_html_string: true)
+      renderer = ERB.new(File.read(TEMPLATE_FILE))
+      result = renderer.result(report.get_binding)
+
+      premailer = Premailer.new(result, with_html_string: true)
 
       # puts premailer.to_inline_css
       # puts body
@@ -44,7 +34,7 @@ module StockChecker
         from     EMAIL_FROM
         to       to
         cc       EMAIL_CC
-        subject  subject
+        subject  'New report is ready'
 
         html_part do
           content_type 'text/html; charset=UTF-8'

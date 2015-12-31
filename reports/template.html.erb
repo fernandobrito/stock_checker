@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title>SportsDirect Changes Report</title>
+
+  <style>
+    .product-image { width: 150px; }
+    .strong { font-weight: bold; }
+    .red { color: red; }
+    .green { color: green; }
+  </style>
+</head>
+<body>
+  <% product_notifications = @notifications.group_by(&:product) %>
+
+  <h1>Product changes (generated at <%= @generated_at %>)</h1>
+
+  <div>
+    <% product_notifications.each do |product, notifications| %>
+      <h2><a href="<%= product.url %>" target="_blank"><%= product.name %></a></h2>
+      <img class="product-image" src="<%= product.picture_url %>" />
+
+      <p>
+        <%= notifications.join('<br>') %>
+      </p>
+
+      <hr />
+    <% end %>
+  </div>
+
+</body>
+</html>
