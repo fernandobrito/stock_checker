@@ -1,17 +1,17 @@
+require 'yaml'
+
 module StockChecker
   module Storage
     PATH = File.join(File.dirname(__FILE__), '..', '..', 'data')
 
-    # Save content in file name uri
+    # Save product in file
     #
-    # @param [String] uri
-    # @param [String] content
-    # @return [String] content of file
-    def self.store(uri, content)
-      Logging::logger.info "[Storage] Storing file #{uri}"
+    # @param [Product] product
+    def self.store(product)
+      Logging::logger.info "[Storage] Storing file #{product.uri}"
 
-      File.open(File.join(PATH, uri), 'w') do |file|
-        file.write(content)
+      File.open(File.join(PATH, product.uri), 'w') do |file|
+        file.write(YAML::dump(product))
       end
     end
 
@@ -20,13 +20,13 @@ module StockChecker
     # Useful to see if this is first time parsing.
     #
     # @param uri
-    # @return [String] content of file
+    # @return [Product] product
     def self.retrieve(uri)
       Logging::logger.info "[Storage] Retrieving file #{uri}"
 
       return nil unless File.exists?(File.join(PATH, uri))
 
-      return File.read(File.join(PATH, uri))
+      return YAML::load(File.read(File.join(PATH, uri)))
     end
   end
 end
