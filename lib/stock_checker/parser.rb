@@ -1,8 +1,6 @@
 require 'httparty'
 require 'nokogiri'
 
-require 'byebug'
-
 module StockChecker
   class Parser
     include Logging
