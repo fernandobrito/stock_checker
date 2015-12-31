@@ -15,7 +15,7 @@ module StockChecker
           notifications << Notification.new(new, "<span class='green strong'>Item added:</span> #{new_item.to_s}")
         else
           if old_item.stock != new_item.stock && new_item.stock == 'Red'
-            notifications << Notification.new(new, "Stock from #{new_item.to_s}: #{old_item.stock} -> #{new_item.stock}")
+            notifications << Notification.new(new, "<span class='strong'>Stock changed:</span> #{new_item.to_s} (#{old_item.stock} -> #{new_item.stock})")
           end
         end
       end
