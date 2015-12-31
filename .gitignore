@@ -11,3 +11,4 @@ data/
 .idea/
 /bin/.byebug_history
 /.rvmrc
+/reports/output/
