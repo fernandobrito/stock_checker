@@ -21,8 +21,6 @@ require File.join(File.dirname(__FILE__), 'stock_checker', 'batch_comparator')
 
 require File.join(File.dirname(__FILE__), 'helpers', 'try_rescue')
 
-require 'byebug'
-
 module StockChecker
   # @param url String URL of a CSV file with many product URLs
   def self.check_list(options = Hash.new)
