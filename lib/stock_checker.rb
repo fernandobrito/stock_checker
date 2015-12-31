@@ -16,7 +16,6 @@ require File.join(File.dirname(__FILE__), 'stock_checker', 'parser')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'storage')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'converter')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'importer')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'diff')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'mailer')
 require File.join(File.dirname(__FILE__), 'stock_checker', 'batch_comparator')
 

@@ -4,7 +4,6 @@ gem 'bundler'
 
 gem 'httparty'
 gem 'nokogiri'
-gem 'diffy'
 gem 'mail'
 gem 'premailer'
 gem 'tzinfo'
