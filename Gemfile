@@ -7,6 +7,8 @@ gem 'nokogiri'
 gem 'diffy'
 gem 'mail'
 gem 'premailer'
+gem 'tzinfo'
+gem 'tzinfo-data'
 
 gem 'rspec'
 gem 'guard'
