@@ -9,10 +9,12 @@ gem 'premailer'
 gem 'tzinfo'
 gem 'tzinfo-data'
 
-gem 'rspec'
-gem 'guard'
-gem 'guard-rspec'
-gem 'libnotify'
-gem 'simplecov', :require => false, :group => :test
+group :test do
+  gem 'rspec'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'libnotify'
+  gem 'simplecov', :require => false
 
-gem 'byebug'
+  gem 'byebug'
+end
