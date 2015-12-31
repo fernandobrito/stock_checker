@@ -13,6 +13,7 @@ module StockChecker
       !name.nil?
     end
 
+    # @return [Item]
     def find_item(item)
       return nil if @items.nil?
 
