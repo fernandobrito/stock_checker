@@ -1,11 +1,17 @@
 module StockChecker
-  class StockComparator < Comparator
 
-    # @param [Item] old
-    # @param [Item] new
+  # Compare individual items of each product. Generate alerts if the stock
+  #  status (described in the website as either Green, Yellow or Red) has changed
+  #  and it is now Red.
+  #
+  # Red means 'low' stock. If the item is out of stock, the website actually
+  #  removes it from our JSON. If an item is removed or added, an alert is also generated.
+  class StockComparator < Comparator
     def compare(old, new)
       notifications = []
 
+      # Start by iterating over the products from the new item.
+      # Allows us to find items added.
       for new_item in new.items
         old_item = old.find_item(new_item)
 
@@ -20,6 +26,8 @@ module StockChecker
         end
       end
 
+      # We also have to iterate over items from the old product.
+      # Allows us to find items deleted.
       for old_item in old.items
         new_item = new.find_item(old_item)
 

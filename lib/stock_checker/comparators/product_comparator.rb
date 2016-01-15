@@ -1,14 +1,14 @@
 module StockChecker
 
-  # Check if product existed and now it does not or vice-versa
+  # Compare two products. Generate alerts if the product did not exist but now it does,
+  #  or vice-versa.
   class ProductComparator < Comparator
     def compare(old, new)
-
       # It existed, and it still does
       if (old.exists?) && (new.exists?)
         Logging::logger.info '== [ProductComparator] Product existed, and still exists'
 
-        return [ ]
+        return []
 
         # It did not exist, but now it does
       elsif (! old.exists?) && (new.exists?)
