@@ -1,4 +1,8 @@
 module StockChecker
+
+  # Takes one or more comparators and offers a method (#compare) to
+  #  run all of them on 2 products. It can be stopped if a Comparator
+  #  returns false on the method #continue?
   class BatchComparator
     attr_accessor :comparators, :notifications
 

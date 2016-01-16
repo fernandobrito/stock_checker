@@ -1,18 +1,23 @@
-# Class to convert the original JSON from the website to a simpler version
-
-# JSON Structure:
-# Array with color ColVarId:
-#  SizeVariants field with array:
-#    SizeName
-#    ProdSizePrices
-#      SellPrice
-
 module StockChecker
-  module Converter
-    # Converts an entire hashed json with all product items (from the website)
-    #  to an array of Item objects
-    # On the process, replaces color_ids with the color name
 
+  # Module to convert the original JSON from the website to an array
+  #  of items
+  #
+  # JSON Structure:
+  # Array with color ColVarId:
+  #  SizeVariants field with array:
+  #    SizeName
+  #    ProdSizePrices
+  #      SellPrice
+  module Converter
+
+    # Converts an entire hashed JSON with all product items (from the website)
+    #  to an array of Item objects
+    # On the process, replaces color_ids with the color name (which is stored
+    #  in another element on the website)
+    # @param [Object] json JSON object
+    # @param [Object] color_table
+    # @return [Array<Item>]
     def self.convert_complex_json(json, color_table)
       # Create the array with all items
       items = Array.new
@@ -30,7 +35,11 @@ module StockChecker
       end
 
 
-      # Second, generate all possibilities
+      # Second, generate all possibilities with empty stock
+      #  status.
+      # When an item is out of stock, the website does not
+      #  include it on the array. By looking all colors and sizes
+      #  available, we can generate all possible combinations.
       for color in colors.uniq
         for size in sizes.uniq
           items << Item.new(size, color, '', '')
@@ -38,7 +47,8 @@ module StockChecker
       end
 
 
-      # Now, fill with the correct values
+      # Now, fill with the correct values for the products that
+      #  are on stock.
       for color_group in json
         color_name = color_table[color_group['ColVarId']]
 
@@ -57,9 +67,16 @@ module StockChecker
       items
     end
 
+    # Generates a string table with all items, listing
+    #  their prices and stock status.
+    # It is used on the report to give an overview on which
+    #  items are available.
+    # @param [Array<Item>] items
+    # @return [String]
     def self.convert_items_to_string_rows(items)
       output = Array.new
 
+      # Group items by color
       groups = items.group_by{ |item| item.color }
 
       groups.each do |color, items|
@@ -70,8 +87,7 @@ module StockChecker
           output << "#{item.color.center(15)} / #{item.size.center(10)} / #{item.price.center(10)} / #{item.stock.center(10)}"
         end
       end
-
-      # puts output.sort.join("\n")
+      
       output.sort.join('<br/>')
     end
   end

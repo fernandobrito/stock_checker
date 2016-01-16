@@ -20,21 +20,32 @@ require 'stock_checker/importer'
 require 'stock_checker/mailer'
 require 'stock_checker/batch_comparator'
 
+# Main module and public interface of this program.
 module StockChecker
-  # @param url String URL of a CSV file with many product URLs
-  def self.check_list(options = Hash.new)
-    product_urls = StockChecker::Importer.import(options[:url])
 
+  # Main public method. Receives a list of product URLs, run
+  #  the comparators and generate a report.
+  #
+  # @param [Hash] options the options to start the program
+  # @option options [String] :url URL of a CSV file with many product URLs
+  # @option options [String] :email email address to send the notifications to
+  # @option options [Boolean] :dry_run do not send emails and do not modify data files
+  def self.check_list(options = Hash.new)
+    # Get the individual product URLs from the input CSV
+    product_urls = Importer.import(options[:url])
+
+    # Select which comparators we want to use
     batch_comparator = BatchComparator.new
     batch_comparator.comparators << ProductComparator
     batch_comparator.comparators << StockComparator
 
-    for product_url in product_urls
+    # Iterate over all product urls and run the comparator
+    product_urls.each do |product_url|
       StockChecker.check_single(product_url, batch_comparator, options)
     end
 
-    puts batch_comparator.notifications
-
+    # If there the Comparators generated any notification,
+    #  generate a report and send the URL by email to the user.
     if batch_comparator.notifications.any?
       report = Report.new(batch_comparator.notifications)
       report.process
@@ -45,18 +56,25 @@ module StockChecker
     end
   end
 
+private
+  #
   # @param [String] url an individual product URL
+  # @param [BatchComparator] batch_comparator
+  # @param [Hash] options
+  # @option options [Boolean] :dry_run do not send emails and do not modify data files
   def self.check_single(url, batch_comparator, options = Hash.new)
-    # Parse from url
     Logging::logger.info '= [StockChecker] Initializing'
 
     begin
+      # Parse the product. If a product is not found, an exception is raised.
       parser = Parser.new(url)
 
+      # Saves data parsed in an object
       new = Product.new(parser.product_name, parser.uri, url)
       new.items = Converter.convert_complex_json(parser.json_variants, parser.colors)
       new.picture_url = parser.picture_url
-    rescue IOError
+    rescue ProductNotFound
+      # Create the object for a product that was not found
       new = Product.new(nil, Parser.extract_uri(url), url)
     end
 

@@ -1,11 +1,12 @@
 require 'yaml'
 
 module StockChecker
+
+  # Module for retrieving and storing products in files (YAML format)
   module Storage
     PATH = File.join(File.dirname(__FILE__), '..', '..', 'data')
 
     # Save product in file
-    #
     # @param [Product] product
     def self.store(product)
       Logging::logger.info "[Storage] Storing file #{product.uri}"
@@ -16,9 +17,8 @@ module StockChecker
     end
 
 
-    # Retrieve saved file for this parser or nil if there is none.
+    # Retrieve saved file or nil if there is none.
     # Useful to see if this is first time parsing.
-    #
     # @param uri
     # @return [Product] product
     def self.retrieve(uri)
