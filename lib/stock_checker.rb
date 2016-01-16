@@ -1,24 +1,24 @@
-require 'helpers/timezone'
-require 'helpers/try_rescue'
+require_relative 'helpers/timezone'
+require_relative 'helpers/try_rescue'
 
-require 'stock_checker/version'
-require 'stock_checker/logging'
+require_relative 'stock_checker/version'
+require_relative 'stock_checker/logging'
 
-require 'stock_checker/comparators/comparator'
-require 'stock_checker/comparators/product_comparator'
-require 'stock_checker/comparators/stock_comparator'
+require_relative 'stock_checker/comparators/comparator'
+require_relative 'stock_checker/comparators/product_comparator'
+require_relative 'stock_checker/comparators/stock_comparator'
 
-require 'stock_checker/models/product'
-require 'stock_checker/models/item'
-require 'stock_checker/models/notification'
+require_relative 'stock_checker/models/product'
+require_relative 'stock_checker/models/item'
+require_relative 'stock_checker/models/notification'
 
-require 'stock_checker/report'
-require 'stock_checker/parser'
-require 'stock_checker/storage'
-require 'stock_checker/converter'
-require 'stock_checker/importer'
-require 'stock_checker/mailer'
-require 'stock_checker/batch_comparator'
+require_relative 'stock_checker/report'
+require_relative 'stock_checker/parser'
+require_relative 'stock_checker/storage'
+require_relative 'stock_checker/converter'
+require_relative 'stock_checker/importer'
+require_relative 'stock_checker/mailer'
+require_relative 'stock_checker/batch_comparator'
 
 # Main module and public interface of this program.
 module StockChecker

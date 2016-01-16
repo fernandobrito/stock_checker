@@ -29,6 +29,5 @@ puts "==> Running executable with the following options: #{options}"
 
 # mine. debug
 # url = 'https://dl.dropboxusercontent.com/u/9598149/products.csv'
-# url = 'https://www.dropbox.com/s/eik1k6xivpa6vln/Stock%20Checker.csv?dl=1'
 
 StockChecker.check_list(options)
