@@ -1,25 +1,24 @@
-require File.join(File.dirname(__FILE__), 'helpers', 'timezone')
+require 'helpers/timezone'
+require 'helpers/try_rescue'
 
-require File.join(File.dirname(__FILE__), 'stock_checker', 'version')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'logging')
+require 'stock_checker/version'
+require 'stock_checker/logging'
 
-require File.join(File.dirname(__FILE__), 'stock_checker', 'comparators', 'comparator')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'comparators', 'product_comparator')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'comparators', 'stock_comparator')
+require 'stock_checker/comparators/comparator'
+require 'stock_checker/comparators/product_comparator'
+require 'stock_checker/comparators/stock_comparator'
 
-require File.join(File.dirname(__FILE__), 'stock_checker', 'models', 'product')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'models', 'item')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'models', 'notification')
+require 'stock_checker/models/product'
+require 'stock_checker/models/item'
+require 'stock_checker/models/notification'
 
-require File.join(File.dirname(__FILE__), 'stock_checker', 'report')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'parser')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'storage')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'converter')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'importer')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'mailer')
-require File.join(File.dirname(__FILE__), 'stock_checker', 'batch_comparator')
-
-require File.join(File.dirname(__FILE__), 'helpers', 'try_rescue')
+require 'stock_checker/report'
+require 'stock_checker/parser'
+require 'stock_checker/storage'
+require 'stock_checker/converter'
+require 'stock_checker/importer'
+require 'stock_checker/mailer'
+require 'stock_checker/batch_comparator'
 
 module StockChecker
   # @param url String URL of a CSV file with many product URLs
@@ -46,7 +45,7 @@ module StockChecker
     end
   end
 
-  # @param url String an individual product URL
+  # @param [String] url an individual product URL
   def self.check_single(url, batch_comparator, options = Hash.new)
     # Parse from url
     Logging::logger.info '= [StockChecker] Initializing'
