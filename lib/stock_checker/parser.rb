@@ -20,10 +20,12 @@ module StockChecker
       logger.info "[Parser] Parsing #{url}"
       @url = url
 
-      sleep(2)
+      # Politeness 1: sleep between requests
+      sleep(1)
 
-      # Makes the request
-      @page = HTTParty.get(@url)
+      # Makes the request.
+      # Politeness 2: identify ourselves as bot so we can be blocked
+      @page = HTTParty.get(@url, headers: { 'User-Agent' => 'Mozilla/5.0 (github.com/fernandobrito/stock_checker bot)'})
       @parsed_page = Nokogiri::HTML(page)
 
       # If all items from the product is out of stock, the
