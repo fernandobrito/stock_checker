@@ -22,7 +22,7 @@ module StockChecker
         Logging::logger.info '== [ProductComparator] Product existed, but now it does not'
 
         @continue = false
-        return [ Notification.new(new, 'Product removed') ]
+        return [ Notification.new(old, 'Product removed') ]
 
       # Product did not exist, and still does not
       elsif (! old.exists?) && (! new.exists?)

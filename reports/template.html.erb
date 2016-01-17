@@ -10,6 +10,7 @@
       .container { text-align: center; }
 
       .tooltip-inner {
+        font-size: 10px !important;
         text-align: left !important;
         max-width: 700px !important;
         font-family: "Lucida Console", Monaco, monospace !important;
@@ -29,7 +30,7 @@
       <% product_notifications.each do |product, notifications| %>
         <h2>
           <a href="<%= product.url %>" target="_blank"
-               data-toggle="tooltip" title="<%= Converter.convert_items_to_string_rows(product.items).gsub(" ", "&nbsp;") %>"
+               data-toggle="tooltip" title="<%= Converter.convert_items_to_string_rows(product.items).gsub(" ", "&nbsp;") if product.items %>"
                data-placement="bottom"><%= product.name %></a>
         </h2>
 

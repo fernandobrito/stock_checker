@@ -74,6 +74,8 @@ module StockChecker
     # @param [Array<Item>] items
     # @return [String]
     def self.convert_items_to_string_rows(items)
+      return if items.nil?
+
       output = Array.new
 
       # Group items by color
