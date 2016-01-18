@@ -31,5 +31,10 @@ module StockChecker
     def to_s
       "#{@color} / #{@size}"
     end
+
+    # Equality comparison
+    def ==(other)
+      (self.class == other.class && self.size == other.size && self.color == other.color)
+    end
   end
 end
