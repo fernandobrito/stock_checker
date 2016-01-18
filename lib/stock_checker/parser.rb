@@ -10,15 +10,23 @@ module StockChecker
   class Parser
     include Logging
 
-    attr_reader :url, :colors_element, :parsed_page, :page
+    attr_reader :url, :colors_element, :page, :parsed_page
 
-    # Create the object and automatically parses the URL.
+    # Create the object, but does not parse it yet. The method
+    #  #request should be called.
     #
-    # @raise [ProductNotFound] if the product does not exist
     # @param [String] url of the product
     def initialize(url)
-      logger.info "[Parser] Parsing #{url}"
+      logger.info "[Parser] Initializing"
+
       @url = url
+    end
+
+    # Parses the URL.
+    #
+    # @raise [ProductNotFound] if the product does not exist
+    def request
+      logger.info "[Parser] Parsing #{url}"
 
       # Politeness 1: sleep between requests
       sleep(1)
@@ -31,6 +39,14 @@ module StockChecker
       # If all items from the product is out of stock, the
       #  product page is removed.
       validate_if_page_exists
+    end
+
+    # Gives a page (HTML string) to the parser. Useful for testing.
+    # On real scenarios, user will probably use #request
+    # @param [String] page HTML
+    def page=(page)
+      @page = page
+      @parsed_page = Nokogiri::HTML(@page)
     end
 
     # URI is used to name the file where we store the data of the product

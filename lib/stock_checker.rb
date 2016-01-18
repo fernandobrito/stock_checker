@@ -68,6 +68,7 @@ private
     begin
       # Parse the product. If a product is not found, an exception is raised.
       parser = Parser.new(url)
+      parser.request
 
       # Saves data parsed in an object
       new = Product.new(parser.product_name, parser.uri, url)
