@@ -1,28 +1,36 @@
 describe StockChecker::StockComparator do
   describe '#compare' do
+    let(:old) do
+      product = StockChecker::Product.new('Product name', 'url', 'uri')
+      product.items = [ StockChecker::Item.new('G', 'Blue', '22', 'Yellow') ]
+
+      product
+    end
+
+    let(:new) do
+      product = StockChecker::Product.new('Product name', 'url', 'uri')
+      product.items = [ StockChecker::Item.new('G', 'Blue', '22', 'Red') ]
+
+      product
+    end
+
     context 'when stock changes from yellow to red' do
-      let(:old) do
-        product = StockChecker::Product.new('Product name', 'url', 'uri')
-        items = []
-        items << StockChecker::Item.new('G', 'Blue', '22', 'Yellow')
-
-        product.items = items
-
-        product
+      it 'should generate a notification' do
+        expect(subject.compare(old, new).size).to be_eql(1)
       end
+    end
 
-      let(:new) do
-        product = StockChecker::Product.new('Product name', 'url', 'uri')
-        items = []
-        items << StockChecker::Item.new('G', 'Blue', '22', 'Red')
-
-        product.items = items
-
-        product
+    context 'when a new item is added' do
+      it 'should generate a notification' do
+        old.items = []
+        expect(subject.compare(old, new).size).to be_eql(1)
       end
+    end
 
-      it 'should do generate a notification' do
-        expect(subject.compare(old, new)).not_to be_empty
+    context 'when a new item is removed' do
+      it 'should generate a notification' do
+        new.items = []
+        expect(subject.compare(old, new).size).to be_eql(1)
       end
     end
   end
