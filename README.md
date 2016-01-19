@@ -22,5 +22,9 @@ Clone the repository and then execute:
 
 Update the SMTP email configuration on `mailer.rb`. Create a symbolic link of `reports/output` in your WWW public folder and add the URL prefix on `report.rb` so the correct link is properly sent my email.
 
-Set up a cron job to execute `bin/stock_checker --email <EMAIL> --url <URL>`. You can also pass `--dry-run` for debugging purposes, so no emails or files are modified. 
+For example, set up a cron job to execute `bin/stock_checker --email <EMAIL> --url <URL>`. You can also pass `--dry-run` for debugging purposes, so no emails or files are modified. 
+
+Working example (from the `bin/` folder):
+
+    $ ./stock_checker -d -u https://dl.dropboxusercontent.com/u/9598149/products.csv
 
