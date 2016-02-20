@@ -12,6 +12,8 @@ There is a class `Parser` that goes into each individual product webpage. All th
 
 By default, prices from SportsDirect are in GBP, but it can be changed on the website. We send cookies on the `Parser` to have prices in EUR.
 
+Notifications have priorities that are used to sort products on the report. We show the removed and readded products first.
+
 ## Installation
 
 Clone the repository and then execute:

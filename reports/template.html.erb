@@ -22,12 +22,13 @@
   </head>
 
   <body>
-    <% product_notifications = @notifications.group_by(&:product) %>
-
     <div class="container">
       <h1>Product changes <small>(generated at <%= @generated_at %>)</small></h1>
 
-      <% product_notifications.each do |product, notifications| %>
+      <% @grouped_notifications.each do |product_and_notifications| %>
+        <% product = product_and_notifications.first
+        notifications = product_and_notifications.last %>
+
         <h2>
           <a href="<%= product.url %>" target="_blank"
                data-toggle="tooltip" title="<%= Converter.convert_items_to_string_rows(product.items).gsub(" ", "&nbsp;") if product.items %>"

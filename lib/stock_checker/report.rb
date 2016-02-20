@@ -15,11 +15,21 @@ module StockChecker
 
     URL_PREFIX = ''
 
-    attr_accessor :generated_at
+    attr_accessor :generated_at, :notifications, :grouped_notifications
 
     # @param [Array<Notification>] notifications
     def initialize(notifications)
       @notifications = notifications
+
+      # Group notifications by products
+      @grouped_notifications = @notifications.group_by(&:product)
+
+      # Sort notifications by priority. To calculate the priority of a
+      #  product, all notification's priority are summed.
+      # Note that @grouped_notifications is now nested array
+      @grouped_notifications = @grouped_notifications.sort_by do |product, notifications|
+        notifications.map(&:priority).reduce(:+)
+      end.reverse!
 
       @generated_at = TimeZone.get_cet_time.strftime("%Y-%m-%d %H:%M")
       @output_file_path = File.join(OUTPUT_FOLDER, @generated_at + '.html')
