@@ -12,6 +12,11 @@ module StockChecker
 
     attr_reader :url, :colors_element, :page, :parsed_page
 
+    USER_AGENT = 'Mozilla/5.0 (github.com/fernandobrito/stock_checker bot)'
+
+    # By default, prices are in GBP
+    COOKIES = { 'SportsDirect_AnonymousUserCurrency' =>	'EUR' }
+
     # Create the object, but does not parse it yet. The method
     #  #request should be called.
     #
@@ -33,7 +38,7 @@ module StockChecker
 
       # Makes the request.
       # Politeness 2: identify ourselves as bot so we can be blocked
-      @page = HTTParty.get(@url, headers: { 'User-Agent' => 'Mozilla/5.0 (github.com/fernandobrito/stock_checker bot)'})
+      @page = HTTParty.get(@url, headers: { 'User-Agent' => USER_AGENT }, cookies: COOKIES )
       @parsed_page = Nokogiri::HTML(page)
 
       # If all items from the product is out of stock, the

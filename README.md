@@ -10,6 +10,7 @@ The output is generated as a HTML report, which should be available in a web ser
 
 There is a class `Parser` that goes into each individual product webpage. All the data  we need from a product (colors, sizes, prices and stock status) is already stored in a JSON format on the page. `Converter` converts this complicated JSON into a data structure (`Product` and `Item`) easier to work with, removing unnecessary attributes. This simpler data structure is stored in a file, and later retrieved (`Storage`), to be checked for modifications (`Comparator`). In case something has changed, a report is generated (`Report`) and an email is sent with the URL ofthe report (`Mailer`).
 
+By default, prices from SportsDirect are in GBP, but it can be changed on the website. We send cookies on the `Parser` to have prices in EUR.
 
 ## Installation
 
